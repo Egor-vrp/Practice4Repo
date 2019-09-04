@@ -1,0 +1,75 @@
+<apex:page controller="Practice4DetailPageController" sidebar="false" showHeader="false" docType="html-5.0">
+    <apex:slds />
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-address" title="{!$Label.buyAbolt}">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#maintenance_plan')}" />
+                            </svg>
+                        <span class="slds-assistive-text">{!prod.Name}</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-text-heading_large">{!prod.Name}</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="slds-page-header__name-meta">{!$Label.detailPage}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>  
+    <div style="width: 20%; margin: auto;">
+        <apex:pageMessages />
+    </div> 
+    <div class="slds-grid">
+    	<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2" >    
+			<div style="text-align: center;">
+				<apex:image id="pic" value="{!prod.Image__c}" style="margin-bottom:0.5rem"
+                               										alt="Product image"/>    
+			</div>
+		</div>
+		<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"> 
+  			<div class="slds-grid" style="height:100%">
+      			<div class="slds-col slds-size_3-of-4">
+                     <div class="slds-card_boundary slds-m-right_small" style="height: 50%;">    
+                     	<div class="slds-form-element">
+                          	<span class="slds-form-element__label">{!$Label.productDescription}</span>
+                            <div class="slds-form-element__control">
+                                 <div class="slds-form-element__static slds-text-align_left" >
+                                     <p style="white-space: normal;">
+                                     	{!prod.Product_description__c}
+                                     </p>
+                                     <p class="slds-text-title_caps">
+                                        {!$Label.locatedAt} {!prod.Warehouse__r.Name}
+                                     </p>
+                                 </div>
+                             </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="slds-col slds-size_1-of-4">
+                    <div class="slds-text-heading_medium">{!$Label.price} {!prod.Unit_Price__c} {!$Label.perRiece}</div>
+                        {!$Label.inStock} {!prod.Units_Available__c}
+                        <br/>
+                        <button class="slds-button slds-button_brand" onclick="buyPage('{!prod.Id}')">{!$Label.buy}</button>
+                </div>
+            </div>                   
+        </div>
+    </div>    
+    <apex:outputLink value="{!$Page.Practice4MainPage}">
+    	<div class="slds-text-title_caps slds-text-align_center">{!$Label.backToShop}</div>
+    </apex:outputLink>  
+    <apex:form >
+    	<apex:actionFunction action="{!buyPage}" name="buyPage">
+        	<apex:param name="id" assignTo="{!prodId}" value="" />
+        </apex:actionFunction>
+    </apex:form>
+</apex:page>

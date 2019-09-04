@@ -1,0 +1,111 @@
+<apex:page controller="Practice4BuyPageController" sidebar="false" showHeader="false" docType="html-5.0">
+    <apex:slds />
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-standard-address" title="{!$Label.buyAbolt}">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/standard-sprite/svg/symbols.svg#maintenance_plan')}" />
+                            </svg>
+                        <span class="slds-assistive-text">{!$Label.newOrder}</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-text-heading_large">{!$Label.newOrder}</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="slds-page-header__name-meta">{!$Label.buyAbolt}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div> 
+	<div style="width: 25%; margin: auto;">
+        <apex:pageMessages />
+    </div>     
+    <div class="slds-grid">
+    	<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2" >    
+    		<div class="slds-card">
+ 				<div class="slds-card__header slds-grid">
+ 					<header class="slds-media slds-media_center slds-has-flexi-truncate">
+ 						<div class="slds-media__body">                                       
+    						<h2 class="slds-text-heading_medium">                                                       
+  								<span>{!prod.Name}</span>                                               
+   							</h2>                                      	                                                                                                                            
+  						</div>
+  					</header>
+          		</div>                                           
+        		<div class="slds-grid">
+        			<div class="slds-col slds-size_1-of-2" >    
+          				<div style="text-align: left;">
+      						<apex:image id="pic" value="{!prod.Image__c}" style="margin-bottom:0.5rem"
+                   				width="190px" height="auto" alt="Description"/>    
+       					</div>
+     				</div>
+        			<div class="slds-col slds-size_1-of-2"> 
+          				<div class="slds-grid slds-grid_vertical">
+           					<div class="slds-col">
+            					<div class="slds-text-heading_medium">{!$Label.price} {!prod.Unit_Price__c} {!$Label.perRiece}</div>           			                                		                                                        
+        					</div>
+         					<div class="slds-col">
+          						{!$Label.inStock} {!prod.Units_Available__c} 
+         					</div>
+           					<div class="slds-col">
+          						<apex:outputLink onclick="detailsPage('{!prod.Id}')">
+          							{!$Label.showDetails}
+           						</apex:outputLink>
+           					</div>
+          				</div>                   
+         			</div>
+         		</div>    
+            </div>  
+        </div>
+        <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2">  
+        	<div class="slds-grid">
+            	<div class="slds-col slds-size_1-of-2 slds-large-size_1-of-6">
+                    <apex:outputLabel for="email">{!$Label.email}</apex:outputLabel>
+                    <br/> 
+                    <apex:outputLabel for="fname">{!$Label.firstName}</apex:outputLabel>
+                    <br/> 
+                    <apex:outputLabel for="lname">{!$Label.lastName}</apex:outputLabel>
+                    <br/> 
+                    <apex:outputLabel for="quant">{!$Label.quantity}</apex:outputLabel>
+                     
+                </div>
+                <div id="details" class="slds-col slds-size_1-of-2 slds-large-size_1-of-6">
+                    <apex:form >
+                        <apex:input type="email" id="email" value="{!email}" onchange="getCont()"/>
+                        <br/> 
+                        <apex:input type="text" id="fname" value="{!firstName}"/>
+                        <br/>
+                    	<apex:input type="text" id="lname" value="{!lastName}" onchange="checkQuant()"/>
+                        <br/>
+                        <apex:input html-min="0" type="number" id="quant" value="{!quant}"  onchange="checkQuant()"/> 
+                        {!$Label.totalPrice} <apex:outputLabel id="total" value="{!amount}"/> {!$Label.currency}
+               			<apex:actionFunction action="{!getCont}" name="getCont" reRender="fname, lname"/>
+                        <apex:actionFunction action="{!checkQuant}" name="checkQuant" reRender="buttons, total"/>
+                    	<apex:actionFunction action="{!detailsPage}" name="detailsPage" reRender="showstate">
+                			<apex:param name="id" assignTo="{!prodId}" value="" />
+            			</apex:actionFunction>    
+                    </apex:form> 
+                </div>   
+             </div>                              
+        </div>
+	</div>
+    <hr/>
+    <div  class="slds-text-align_center">
+        <apex:form id="buttons">
+        	<apex:commandButton styleClass="slds-button slds-button_brand" rendered="{!showButton}" value="{!$Label.placeOrder}" action="{!makeOrder}"/>
+         	<apex:commandButton styleClass="slds-button slds-button_brand" rendered="{!NOT(showButton)}" disabled="true" value="{!$Label.placeOrder}"/>
+        </apex:form>
+    </div> 
+    <apex:outputLink value="{!$Page.Practice4MainPage}">
+            <div class="slds-text-title_caps slds-text-align_center">{!$Label.backToShop}</div>
+    </apex:outputLink>   
+</apex:page>

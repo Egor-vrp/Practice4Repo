@@ -1,0 +1,113 @@
+<apex:page controller="Practice4MainPageController" sidebar="false" showHeader="false" docType="html-5.0">
+    <apex:slds />  
+    <div class="slds-page-header">
+        <div class="slds-page-header__row">
+            <div class="slds-page-header__col-title">
+                <div class="slds-media">
+                    <div class="slds-media__figure">
+                        <span class="slds-icon_container slds-icon-custom-custom19" title="{!$Label.buyAbolt}">
+                            <svg class="slds-icon slds-page-header__icon" aria-hidden="true">
+                                <use xmlns:xlink="http://www.w3.org/1999/xlink" xlink:href="{!URLFOR($Asset.SLDS, 'assets/icons/custom-sprite/svg/symbols.svg#custom19')}" />
+                            </svg>
+                        <span class="slds-assistive-text">{!$Label.buyAbolt}</span>
+                        </span>
+                    </div>
+                    <div class="slds-media__body">
+                        <div class="slds-page-header__name">
+                            <div class="slds-page-header__name-title">
+                                <h1>
+                                    <span class="slds-page-header__title slds-text-heading_large">{!$Label.buyAbolt}</span>
+                                </h1>
+                            </div>
+                        </div>
+                        <p class="slds-page-header__name-meta">{!$Label.onlineShop}</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div style="width: 20%; margin: auto;">
+        <apex:pageMessages />
+    </div> 
+    <apex:outputPanel id="prodTable">
+                <table class="slds-table slds-table_cell-buffer slds-table_bordered">
+                    <thead>
+                        <tr class="slds-line-height_reset">
+                            <th class="" scope="col">
+                                <div class="slds-truncate" title="{!$Label.products}">{!$Label.products}</div>
+                            </th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr class="slds-hint-parent">
+                            <td data-label="products">            
+                                    <apex:repeat value="{!products}" var="prod">       
+                                        <div class="slds-card">
+                                            <div class="slds-card__header slds-grid">
+                                                <header class="slds-media slds-media_center slds-has-flexi-truncate">
+                                                    <div class="slds-media__body">                                       
+                                                        	<apex:outputLink onclick="detailsPage('{!prod.Id}')">
+                                                                <h2 class="slds-text-heading_medium">                                                       
+                                                                    <span>{!prod.Name}</span>                                               
+                                                                </h2>
+                                                            </apex:outputLink>                                                                                     
+                                                    </div>
+                                                </header>
+                                            </div>                                           
+                                            <div class="slds-grid">
+                                            	<div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2" >    
+                                              		<div style="text-align: center;">
+                                                    	<apex:image id="pic" value="{!prod.Image__c}" style="margin-bottom:0.5rem"
+                                                                    width="190px" height="auto" alt="Description"/>    
+                                                    </div>
+                                            	</div>
+                                                <div class="slds-col slds-size_1-of-1 slds-large-size_1-of-2"> 
+                                                    <div class="slds-grid" style="height:100%">
+                                                      <div class="slds-col slds-size_3-of-4">
+                                                       	<div class="slds-card_boundary slds-m-right_small">    
+                                              		   		<div class="slds-form-element">
+                                                          		<span class="slds-form-element__label">{!$Label.productDescription}</span>
+                                                          		<div class="slds-form-element__control">
+                                                            		<div class="slds-form-element__static slds-text-align_left" >
+                                                              			<p style="white-space: normal;">
+                                                                            {!LEFT(prod.Product_description__c, 100)}...
+                                                                        </p>
+                                                                        <p>
+                                                                            <apex:outputLink onclick="detailsPage('{!prod.Id}')">
+                                                                                {!$Label.showDetails}
+                                                                            </apex:outputLink>
+                                                                        </p> 
+                                                            		</div>
+                                                          		</div>
+                                                        	</div>
+                                                    	</div>
+                                                      </div>
+                                                      <div class="slds-col slds-size_1-of-4">
+                                                          <div class="slds-text-heading_medium">{!$Label.price} {!prod.Unit_Price__c} {!$Label.perRiece}</div>
+                                                           {!$Label.inStock} {!prod.Units_Available__c}
+                                                          <br/>
+                                                          <button class="slds-button slds-button_brand" onclick="buyPage('{!prod.Id}')">{!$Label.buy}</button>
+                                                      </div>
+                                                    </div>                   
+                                            	</div>
+                                            </div>    
+                                        </div>
+                                </apex:repeat>                        
+                            </td>
+                        </tr>
+                    </tbody>
+                </table>      
+    </apex:outputPanel>
+    <div class="slds-form-element  slds-float_right">
+  		<span class="slds-form-element__label">{!$Label.footer}</span>
+	</div>
+    <hr/>
+    <apex:form >
+            <apex:actionFunction action="{!detailsPage}" name="detailsPage" rerender="showstate">
+                <apex:param name="id" assignTo="{!prodId}" value="" />
+            </apex:actionFunction>
+        	<apex:actionFunction action="{!buyPage}" name="buyPage" rerender="showstate">
+                <apex:param name="id" assignTo="{!prodId}" value="" />
+            </apex:actionFunction>
+        </apex:form>
+</apex:page>
